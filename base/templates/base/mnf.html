@@ -1,0 +1,231 @@
+{% load static %} {% csrf_token %} {% block title %}Narration Room {%endblock%} {% block
+    content1 %}  {%block content%} 
+    <style>
+        .dropdown-check-list {
+  display: inline-block;
+}
+
+.dropdown-check-list .anchor {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 50px 5px 10px;
+  border: 1px solid #ccc;
+}
+
+.dropdown-check-list .anchor:after {
+  position: absolute;
+  content: "";
+  border-left: 2px solid black;
+  border-top: 2px solid black;
+  padding: 5px;
+  right: 10px;
+  top: 20%;
+  -moz-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.dropdown-check-list .anchor:active:after {
+  right: 8px;
+  top: 21%;
+}
+
+.dropdown-check-list ul.items {
+  padding: 2px;
+  display: none;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.dropdown-check-list ul.items li {
+  list-style: none;
+}
+
+.dropdown-check-list.visible .anchor {
+  color: #0094ff;
+}
+
+.dropdown-check-list.visible .items {
+  display: block;
+}
+    </style>
+    <div class="container">
+        <form class="form" action="/character/" id="inputForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{id}}" />
+            <input type="text" name="fileUpload" value='{{fileName}}' id="filePath" style="display: none;" />
+            <!--<input type="text" name="script_title" value='' id="filePath1"/>
+                <input type="text" name="author_name" value='' id="filePath2" />-->
+            <div class="container-995">
+                {% if user.is_authenticated %}
+                <div class="new_txt">
+                    <p>
+                        Thanks <b>{{user.first_name}}</b> for uploading script of <b>{{numPages}}</b> pages. <br> <br>
+                        We have detected that the
+                        Language of Screenplay is <b>{{non_dial_src_lang_full}}</b>, Script of Screenplay is
+                        <b>{{dial_src_script}}</b> <br>
+                        Language of dialogues is <b>{{dial_src_lang_full}}</b> and Script of dialogues is
+                        <b>{{dial_src_script}}</b>
+                    </p>
+                </div>
+                {%endif%}
+                <div style="display: grid; grid-template-columns: 30vw auto;">
+                <div>
+                    <div style="margin-left: 2cm;">
+                        <div class="form-group" style="float: left;">
+                            <label name="genre">Character List</label><br>
+                          
+                            
+                            <div style="display:flex; flex-direction: row; position: relative;  padding-left: 10px; ">
+                                {% for character in character_list%}
+                                    <div class="form-check" style="padding:10px;">
+                                        <input name="character_check" class="form-check-input" type="checkbox" value="{{character}}" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                        {{character}}
+                                        </label>
+                                    </div>
+                                
+                                {% endfor %}
+                                </div>   
+
+
+                         <!--  {% comment %} <div id="list1" name="character_list" class="dropdown-check-list" tabindex="100">
+                                <span class="anchor">Character List</span>
+                                <ul class="items"> {% endcomment %}
+                                    {% for character in character_list %}
+                                  {% comment %} <li>
+                                    <input type="checkbox" />{{character}}
+                                </li> {% endcomment %}
+                                <tr>            
+                                    <td> <input type="checkbox" checked="checked" name="character_list" /></td>
+                                     <td> <label class="form-check-label">{{character}}</label></td>
+                                     
+                             </tr>
+                                
+                                {% endfor %}
+                                </ul>
+                              </div>
+                            -->
+                            
+                            <!-- <tr>            
+                                        <td> <input type="checkbox" checked="checked" name="character_list" /></td>
+                                         <td> <label class="form-check-label">{{character}}</label></td>
+                                         
+                                 </tr>
+             -->
+                           
+                           
+
+                    <!-- <div class="form-group">
+                        <label>Script Title<span style="color: red; margin-bottom: -10px;">*</span></label>
+                        <input name="script_title" id="languagea" type="text" class="form-control form-control-md"
+                            placeholder="Script Title" required />
+                        <span class='error' id="languagea_error"></span>
+        
+                    </div>
+                    <div class="form-group">
+                        <label>Author Name<span style="color: red; margin-bottom: -10px;">*</span></label>
+                        <input name="author_name" id="languageb" type="text" class="form-control form-control-md"
+                            placeholder="Author Name" required />
+                        <span class='error' id="languageb_error"></span>
+        
+                    </div>
+                    <div class="form-group">
+                        <label>Copyright Name<span style="color: red; margin-bottom: -10px;">*</span></label>
+                        <input id="languagec" type="text" class="form-control form-control-md" placeholder="Copyright Name"
+                            required />
+                        <span class='error' id="languagec_error"></span>
+        
+        
+                    </div> -->
+                    <input type="number" name="numPages" id="" value='{{numPages}}' style="display: none;" />
+                    <div>
+        
+                        {%if numPages%} {%if numPages > 5%}
+                        <div style="display:flex;">
+                            <input name="SampleScript" type="checkbox" />&nbsp;
+                            <span>Get a sample narration of the script</span>
+                        </div>
+                        {%else%}
+                        <input type="checkbox" name='SampleScript' value="off" style="display: none;">
+                         {%endif%}
+                         {%endif%}
+                    </div>
+        
+                </div>
+                <!-- <div style="margin-left: 2cm;">
+                    <div class="form-group" style="float: left;">
+                        <label name="genre">Genre</label><br>
+                        <input type="checkbox" checked="checked" name="genre[]" />
+                        <label class="form-check-label">Action</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Biopic</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Comedy</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Crime</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Fantasy</label><br>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Drama</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Horror</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Mystery</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Thriller</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>Sci-Fi</label>
+                        <input type="checkbox" name="genre[]" />
+                        <label>War</label>
+        
+                    </div>
+                    <!-- <div class="" style="width: 30vw;
+                            box-sizing: border-box;
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill,minmax(calc(max(350px,25%)),1fr));
+                            grid-column-gap:30px;">
+                        <div class="form-group">
+                            <label>Period set in</label>
+                            <select name="period_set_in" class="form-control select2 form-control-md kt-select2">
+                                <option value="">Select a Time</option>
+                                <option value="Ancient">Ancient</option>
+                                <option value="Contemporary">Contemporary</option>
+                                <option value="Modern">Modern</option>
+                            </select>
+                            <span class='error'></span>
+        
+                        </div>
+                    </div> -->
+                </div> 
+            </div>
+        
+        
+           
+        
+           
+          
+        
+        
+        </div>
+        <div class="card-footer" style=" margin: auto; text-align: center; border:none;">
+            <button type="submit" class="btn btn-primary">Narrate Script</button>
+        </div>
+        </form>
+    </div>
+   <script>
+    var checkList = document.getElementById('list1');
+checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+  if (checkList.classList.contains('visible'))
+    checkList.classList.remove('visible');
+  else
+    checkList.classList.add('visible');
+}
+   </script>
+
+
+    {% endblock %}
